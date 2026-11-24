@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copilot Enablement Webinar Series</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: light;
+      --cp-bg: #f4f6fa;
+      --cp-bg-elevated: #ffffff;
+      --cp-surface: #ffffff;
+      --cp-surface-soft: #f3f6fb;
+      --cp-border: #e2e6ec;
+      --cp-border-strong: #8a94a6;
+      --cp-text: #202124;
+      --cp-text-muted: #55596b;
+      --cp-text-soft: #6b7080;
+      --cp-accent: #0067b8;
+      --cp-accent-hover: #005da6;
+      --cp-accent-soft: rgba(0, 103, 184, 0.08);
+      --cp-accent-fg: #ffffff;
+      --cp-success: #16a34a;
+      --cp-danger: #dc2626;
+      --cp-warning: #f59e0b;
+      --cp-link: #0067b8;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+      --cp-overlay: rgba(255, 255, 255, 0.8);
+      --cp-panel: rgba(255, 255, 255, 0.86);
+      --cp-panel-strong: rgba(255, 255, 255, 0.94);
+      --cp-sheen: rgba(255, 255, 255, 0.55);
+      --cp-highlight: rgba(0, 103, 184, 0.12);
+    }
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --cp-bg: #1b1a19;
+      --cp-bg-elevated: #242322;
+      --cp-surface: #2b2a29;
+      --cp-surface-soft: #323130;
+      --cp-border: #484644;
+      --cp-border-strong: #605e5c;
+      --cp-text: #eaeaea;
+      --cp-text-muted: #a6a6a6;
+      --cp-text-soft: #bcbcbc;
+      --cp-accent: #6cb8ff;
+      --cp-accent-hover: #8ac6ff;
+      --cp-accent-soft: rgba(108, 184, 255, 0.14);
+      --cp-accent-fg: #10233a;
+      --cp-success: #4ade80;
+      --cp-danger: #f87171;
+      --cp-warning: #fbbf24;
+      --cp-link: #6cb8ff;
+      --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --cp-overlay: rgba(41, 41, 41, 0.88);
+      --cp-panel: rgba(30, 29, 28, 0.72);
+      --cp-panel-strong: rgba(27, 26, 25, 0.94);
+      --cp-sheen: rgba(255, 255, 255, 0.04);
+      --cp-highlight: rgba(108, 184, 255, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--cp-bg);
+      color: var(--cp-text);
+      font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+    }
+    .shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+    .top-banner {
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--cp-surface);
+      box-shadow: var(--cp-shadow);
+      margin-bottom: 12px;
+    }
+    .top-banner img {
+      width: 100%;
+      display: block;
+    }
+    .hero {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: var(--cp-shadow);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .kicker {
+      margin: 0 0 4px;
+      color: var(--cp-accent);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      line-height: 1.2;
+    }
+    .lead {
+      margin: 0;
+      color: var(--cp-text-muted);
+      max-width: none;
+    }
+    .lead + .lead {
+      margin-top: 12px;
+    }
+    .section {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      box-shadow: var(--cp-shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+    }
+    .controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .controls label {
+      font-size: 0.88rem;
+      color: var(--cp-text-muted);
+      font-weight: 600;
+    }
+    .select {
+      border: 1px solid var(--cp-border-strong);
+      border-radius: 10px;
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      font: inherit;
+      padding: 8px 10px;
+      min-width: 220px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      border: 1px solid var(--cp-border);
+      border-left: 4px solid var(--cp-accent);
+      border-radius: 16px;
+      padding: 12px;
+      background: var(--cp-surface);
+      box-shadow: var(--cp-shadow);
+    }
+    .pill {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--cp-accent);
+      border: 1px solid var(--cp-accent);
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: var(--cp-accent-soft);
+    }
+    .card h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+    .meta {
+      margin: 0 0 8px;
+      color: var(--cp-text-soft);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .desc {
+      margin: 0 0 10px;
+      color: var(--cp-text-muted);
+      font-size: 0.92rem;
+    }
+    .register {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--cp-accent-fg);
+      background: var(--cp-accent);
+      border: 1px solid var(--cp-accent);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .register:hover {
+      background: var(--cp-accent-hover);
+      border-color: var(--cp-accent-hover);
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .related-card {
+      border: 1px solid var(--cp-border);
+      border-radius: 16px;
+      padding: 12px;
+      background: var(--cp-surface);
+      box-shadow: var(--cp-shadow);
+    }
+    .related-title {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+    .related-desc {
+      margin: 0 0 10px;
+      color: var(--cp-text-muted);
+      font-size: 0.9rem;
+    }
+    .related-link {
+      display: inline-block;
+      text-decoration: none;
+      color: var(--cp-link);
+      border: 1px solid var(--cp-border-strong);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      background: var(--cp-surface-soft);
+    }
+    .conversation-copy {
+      margin: 0 0 10px;
+      color: var(--cp-text-muted);
+      font-size: 0.95rem;
+      max-width: 90ch;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .end-line {
+      margin: 12px 0 0;
+      color: var(--cp-text-soft);
+      font-size: 0.84rem;
+      text-align: center;
+    }
+    .footer-note {
+      margin: 0;
+      color: var(--cp-text-soft);
+      font-size: 0.84rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="top-banner">
+      <img src="./tribal-webinar-banner.png" alt="Microsoft webinar banner">
+    </div>
+
+    <section class="hero">
+      <p class="kicker">Copilot Enablement Webinar Series</p>
+      <h1>Copilot in Action: Role-Based Enablement for Every Team</h1>
+      <p class="lead">
+        January 19-20, 2027 · 11 live sessions · Virtual · All times Central (CT)
+      </p>
+      <p class="lead">
+        Copilot works best when it fits the work your team already does. Over two days, this series shows Tribal government and enterprise teams how Microsoft 365 Copilot can help them draft, summarize, analyze and catch up faster in the apps they use every day, while keeping sensitive information protected.
+      </p>
+      <p class="lead">
+        Each one-hour session focuses on a single role, such as HR, Finance, IT, Legal, Operations, Executives or Administrative Professionals, and uses practical examples your team can try right away. If you're planning a rollout, join Driving Copilot Adoption for a step-by-step playbook.
+      </p>
+      <p class="lead">
+        📅 Register for every session you're interested in. You'll automatically get the recording, even if you can't attend live. Recordings are password protected. Email <a href="mailto:microsofttribal@microsoft.com">microsofttribal@microsoft.com</a> (opens in new window) for access.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Filter Sessions</h2>
+      <div class="controls" aria-label="Session filters">
+        <label for="typeFilter">Filter session type:</label>
+        <select id="typeFilter" class="select">
+          <option value="all">All sessions</option>
+          <option value="copilot-by-role">Copilot by Role</option>
+          <option value="enablement">Enablement</option>
+          <option value="copilot">Copilot Essentials</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Session Details</h2>
+      <div class="cards" id="sessionCards"></div>
+    </section>
+
+    <section class="section">
+      <h2>Related Copilot Sites</h2>
+      <div class="related-grid">
+        <article class="related-card">
+          <h3 class="related-title">Copilot Prompt Library</h3>
+          <p class="related-desc">A practical resource library featuring more than 190 ready-to-use Microsoft 365 Copilot use cases and prompts designed for Tribal Nations. Organized by industry and job function, it helps Tribal governments, enterprises, healthcare, gaming, and other teams discover ways to save time, improve productivity, and put AI to work in their everyday roles.</p>
+          <a class="related-link" href="https://jolly-mud-07a6c1e0f.6.azurestaticapps.net/" target="_blank" rel="noopener noreferrer">Open site</a>
+        </article>
+        <article class="related-card">
+          <h3 class="related-title">GitHub Repository</h3>
+          <p class="related-desc">A collaborative resource hub designed to help Tribal Nations explore, adopt, and innovate with Microsoft AI technologies. The repository features reusable AI agents, Copilot prompts, practical use cases, and shared resources to help Tribal organizations learn from one another, accelerate innovation, and build solutions that support their unique priorities.</p>
+          <a class="related-link" href="https://github.com/Jesstav/MicrosoftTribalNations" target="_blank" rel="noopener noreferrer">Open repository</a>
+        </article>
+        <article class="related-card">
+          <h3 class="related-title">Webinar Series</h3>
+          <p class="related-desc">The Microsoft Tribal Nations Webinar Series brings technology education, practical insights, and resources directly to Tribal communities. Explore sessions covering AI, cybersecurity, cloud modernization, data analytics, and Microsoft technologies, designed to help Tribal organizations build skills, discover new opportunities, and accelerate innovation.</p>
+          <a class="related-link" href="https://jesstav.github.io/microsofttribalnationswebinars/" target="_blank" rel="noopener noreferrer">Open page</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Let's keep the conversation going</h2>
+      <p class="conversation-copy">
+        Thank you for being part of this series. Every session is shaped by what we hear from Tribal leaders and teams, so your input shapes what comes next.
+      </p>
+      <p class="conversation-copy">
+        Have a question, or want to go deeper on a topic? We're happy to set up a one-on-one conversation for your Nation. Tell us your priorities and we'll bring the right people.
+      </p>
+      <div class="action-buttons">
+        <a class="register" href="mailto:microsofttribal@microsoft.com">Request a Conversation</a>
+        <a class="register" href="https://forms.cloud.microsoft/r/CCcGJSMYmF" target="_blank" rel="noopener noreferrer">Suggest a Future Topic</a>
+        <a class="register" href="https://forms.cloud.microsoft/r/CCcGJSMYmF" target="_blank" rel="noopener noreferrer">Share Feedback</a>
+      </div>
+    </section>
+
+    <p class="end-line">Copilot Enablement Webinar Series · Part of the Microsoft Tribal Nations Webinar Series.</p>
+  </main>
+
+  <script>
+    const SESSIONS = [
+      {
+        title: "Microsoft 365 Copilot for HR Teams",
+        date: "Tuesday, January 19, 2027",
+        time: "11:00 AM - 12:00 PM CT",
+        datetime: "2027-01-19T11:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Spend less time on paperwork and more time supporting your people. Learn practical ways HR teams can draft documents, summarize information, and respond faster while keeping sensitive information protected.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.7cd6759b-be31-4a55-bcd8-9bae79d40e07@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Executives",
+        date: "Tuesday, January 19, 2027",
+        time: "12:00 PM - 1:00 PM CT",
+        datetime: "2027-01-19T12:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Stay on top of priorities, prepare faster, and lead with better information. See how leaders use Copilot to catch up quickly, prep for key conversations, and drive organization-wide AI adoption.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.8ad950f0-661a-4ce5-8ef6-61bb6c9e1e25@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for IT Teams",
+        date: "Tuesday, January 19, 2027",
+        time: "1:00 PM - 2:00 PM CT",
+        datetime: "2027-01-19T13:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Help your IT team work faster and lead the way on AI. See practical IT use cases for documentation, troubleshooting, and communication, plus rollout readiness guidance.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.8d2e267c-2362-4d82-ad41-5b96a3f150ed@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Finance Teams",
+        date: "Tuesday, January 19, 2027",
+        time: "2:00 PM - 3:00 PM CT",
+        datetime: "2027-01-19T14:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Analyze faster, report clearer, and focus on the decisions that matter. Learn how finance teams can use Copilot to streamline analysis, reporting, and budget preparation.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.9d7737e7-4e44-4b01-9968-bfad8dfbbf10@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Marketing Teams",
+        date: "Tuesday, January 19, 2027",
+        time: "3:00 PM - 4:00 PM CT",
+        datetime: "2027-01-19T15:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Create content faster and reach your audience with clearer messaging. See how marketing teams use Copilot to brainstorm, draft, and repurpose content with consistency.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.fcbd2cde-f92a-42e8-a78b-d0d5c60e3fa3@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Administrative Professionals",
+        date: "Wednesday, January 20, 2027",
+        time: "10:00 AM - 11:00 AM CT",
+        datetime: "2027-01-20T10:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Stay organized, save time, and simplify support for leadership. Learn practical ways assistants can manage calendars, email, and priorities with Copilot.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.390a42b6-1e00-413c-ac62-c080d3e6628e@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Driving Copilot Adoption: From Licenses to Lasting Value",
+        date: "Wednesday, January 20, 2027",
+        time: "11:00 AM - 12:00 PM CT",
+        datetime: "2027-01-20T11:00:00-06:00",
+        category: "enablement",
+        categoryLabel: "Enablement",
+        description: "Turn Copilot licenses into measurable productivity. Get a practical rollout playbook covering readiness, champions, training, use cases, and ROI measurement.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.98e67cf9-d582-4d9a-accd-b530b76a2f61@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Transform Work with Microsoft 365 Copilot",
+        date: "Wednesday, January 20, 2027",
+        time: "12:00 PM - 1:00 PM CT",
+        datetime: "2027-01-20T12:00:00-06:00",
+        category: "copilot",
+        categoryLabel: "Copilot Essentials",
+        description: "See Copilot in the Microsoft 365 apps your teams already use to draft, summarize, analyze, and catch up faster so people can focus on higher-impact work.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.0214848c-d2bd-4678-89d1-4b02c80136ea@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Operations Teams",
+        date: "Wednesday, January 20, 2027",
+        time: "1:00 PM - 2:00 PM CT",
+        datetime: "2027-01-20T13:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Streamline workflows, reduce busywork, and keep your organization moving. Discover practical ways operations teams can simplify routine work, improve collaboration, and turn information into action with Copilot.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.3948e859-35d0-445b-88d1-09e2e895a1d9@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Legal Teams",
+        date: "Wednesday, January 20, 2027",
+        time: "2:00 PM - 3:00 PM CT",
+        datetime: "2027-01-20T14:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Spend less time reviewing documents and more time focusing on what matters. See how legal teams can streamline complex document workflows, organize information, and reduce administrative overhead while maintaining appropriate oversight of sensitive information.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.521647fc-2757-4972-82f9-de5dd25aca85@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      },
+      {
+        title: "Microsoft 365 Copilot for Customer Service Teams",
+        date: "Wednesday, January 20, 2027",
+        time: "3:00 PM - 4:00 PM CT",
+        datetime: "2027-01-20T15:00:00-06:00",
+        category: "copilot-by-role",
+        categoryLabel: "Copilot by Role",
+        description: "Respond faster, communicate better, and deliver great customer experiences. Learn practical ways customer service teams can reduce administrative work, simplify communication, and improve day-to-day service workflows with Copilot.",
+        registerUrl: "https://msit.events.teams.microsoft.com/event/msit.42d42665-7fe1-4921-b5e8-d2c921ebfe66@72f988bf-86f1-41af-91ab-2d7cd011db47"
+      }
+    ];
+
+    const sortedSessions = [...SESSIONS].sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+    const sessionCards = document.getElementById("sessionCards");
+    const typeFilter = document.getElementById("typeFilter");
+
+    function renderSessions() {
+      const selectedType = typeFilter.value;
+      const filteredSessions = selectedType === "all"
+        ? sortedSessions
+        : sortedSessions.filter((session) => session.category === selectedType);
+
+      sessionCards.innerHTML = "";
+
+      filteredSessions.forEach((session) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <p class="pill">${session.categoryLabel}</p>
+          <h3>${session.title}</h3>
+          <p class="meta">${session.date} · ${session.time}</p>
+          <p class="desc">${session.description}</p>
+          <a class="register" href="${session.registerUrl}" target="_blank" rel="noopener noreferrer">Register</a>
+        `;
+        sessionCards.appendChild(card);
+      });
+    }
+
+    typeFilter.addEventListener("change", renderSessions);
+    renderSessions();
+  </script>
+</body>
+</html>
