@@ -132,27 +132,6 @@
       margin: 0 0 12px;
       font-size: 1.2rem;
     }
-    .controls {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .controls label {
-      font-size: 0.88rem;
-      color: var(--cp-text-muted);
-      font-weight: 600;
-    }
-    .select {
-      border: 1px solid var(--cp-border-strong);
-      border-radius: 10px;
-      background: var(--cp-surface);
-      color: var(--cp-text);
-      font: inherit;
-      padding: 8px 10px;
-      min-width: 220px;
-    }
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -287,19 +266,6 @@
       <p class="lead">
         📅 Register for every session you're interested in. You'll automatically get the recording, even if you can't attend live. Recordings are password protected. Email <a href="mailto:microsofttribal@microsoft.com">microsofttribal@microsoft.com</a> (opens in new window) for access.
       </p>
-    </section>
-
-    <section class="section">
-      <h2>Filter Sessions</h2>
-      <div class="controls" aria-label="Session filters">
-        <label for="typeFilter">Filter session type:</label>
-        <select id="typeFilter" class="select">
-          <option value="all">All sessions</option>
-          <option value="copilot-by-role">Copilot by Role</option>
-          <option value="enablement">Enablement</option>
-          <option value="copilot">Copilot Essentials</option>
-        </select>
-      </div>
     </section>
 
     <section class="section">
@@ -462,17 +428,11 @@
 
     const sortedSessions = [...SESSIONS].sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
     const sessionCards = document.getElementById("sessionCards");
-    const typeFilter = document.getElementById("typeFilter");
 
     function renderSessions() {
-      const selectedType = typeFilter.value;
-      const filteredSessions = selectedType === "all"
-        ? sortedSessions
-        : sortedSessions.filter((session) => session.category === selectedType);
-
       sessionCards.innerHTML = "";
 
-      filteredSessions.forEach((session) => {
+      sortedSessions.forEach((session) => {
         const card = document.createElement("article");
         card.className = "card";
         card.innerHTML = `
@@ -486,7 +446,6 @@
       });
     }
 
-    typeFilter.addEventListener("change", renderSessions);
     renderSessions();
   </script>
 </body>
